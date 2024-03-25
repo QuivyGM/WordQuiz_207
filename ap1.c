@@ -2,7 +2,7 @@
 #include <stdlib.h>
 void main()
 {
-    printf("2021041069 조형준\n\n");
+    printf("\n2021041069 조형준\n\n");
     int list[5]; // int형 변수를 저장할 수 있는 배열 공간 생성.
     int *plist[5] = {
         NULL,
