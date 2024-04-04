@@ -1,4 +1,5 @@
 #include <stdio.h>
+
 struct student1
 {
     char lastName;
@@ -28,11 +29,11 @@ int main()
     printf("st3.studentId = %d\n", st3.studentId); // st3 구조체 안에 있는 studentId의 값을 출력.
     printf("st3.grade = %c\n", st3.grade);         // st3 구조체 안에 있는 grade의 값을 출력. 결과적으로 st2값을 대입하였으므로 st2값과 동일.
     /* equality test */
-    // if (st3 == st2) /* not working */ // 구조체끼리의 동등성 검사는 불가능.
-    //     // Ex) st3=st2 형태로 전체 대입을 하거나 strcpy(str3.lastName,str2.lastName);
-    //     // st3.studentId = st2.studentId; , st3.grade = st2.grade; 로 일일이 값을 받아와야 함.
-    //     printf("equal\n");
-    // else
-    //     printf("not equal\n");
+    if (st2.lastName == st3.lastName && st2.studentId == st3.studentId && st2.grade == st3.grade) // 수정한 코드
+        // 구조체끼리의 동등성 검사는 불가능. 구조체의 값이 같은지 비교하려면 모든 값을 각각 비교해야 함.
+        // Ex) st3=st2 형태로 전체 대입을 하거나 위의 코드처럼 일일이 대입한 값들을 비교.
+        printf("\nequal\n");
+    else
+        printf("\nnot equal\n");
     return 0;
 }
