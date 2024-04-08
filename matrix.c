@@ -167,5 +167,6 @@ int main(void)
 
     free_matrix(A, A_row);
     free_matrix(B, B_row);
+    // 모든 연산이 끝난 후, 두 행렬을 할당 해제해줌.
     return 0;
 }
