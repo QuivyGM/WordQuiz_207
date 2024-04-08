@@ -167,6 +167,5 @@ int main(void)
 
     free_matrix(A, A_row);
     free_matrix(B, B_row);
-
     return 0;
 }
