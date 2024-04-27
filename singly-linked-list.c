@@ -175,6 +175,7 @@ int insertFirst(headNode *h, int key)
 }
 
 /* 리스트를 검색하여, 입력받은 key보다 큰값이 나오는 노드 바로 앞에 삽입 */
+// 여기 Case 나누는 게 진짜 어려웠어요........ㅠㅠ
 int insertNode(headNode *h, int key)
 { // listNode : int key, *link
 
@@ -192,7 +193,7 @@ int insertNode(headNode *h, int key)
     }
 
     // Case 2 : 중간에 낑기기
-    while (p->link != NULL && p->link->key < key) // 마지막 노드, 또는 p가 가리키는 다음값의 key보다는 key값이 더 작으면 탈출.
+    while (p->link != NULL && p->link->key < key) // 마지막 노드, 또는 중간에 낑기는 경우에서 탈출.
         p = p->link;
 
     // 다시 마지막 노드까지 온 경우, 중간에 낑기는 경우로 Case 분할.
@@ -225,10 +226,9 @@ int insertLast(headNode *h, int key)
     node->link = NULL;
 
     listNode *p = h->first;
-    while (p->link != NULL)
-    {                // p가 마지막 노드를 가리키면 탈출.
-        p = p->link; // p값이 마지막 노드일 때까지 계속 건너감.
-    }
+    while (p->link != NULL) // 마지막 노드까지 이동.
+        p = p->link;        // p값이 마지막 노드일 때까지 계속 건너감.
+
     p->link = node; // 마지막 노드 바로 뒤에 연결.
     return 0;
 }
@@ -243,7 +243,7 @@ int deleteFirst(headNode *h)
         return;
 
     h->first = p->link; // head가 가리키는 곳을 head->next로 옮겨줌.
-    free(p);            // 그리고 p가 가리키는 head first 메모리를 해제.
+    free(p);            // 그리고 p가 가리키는 head first를 메모리 해제.
     return 0;
 }
 
@@ -252,13 +252,64 @@ int deleteFirst(headNode *h)
  */
 int deleteNode(headNode *h, int key)
 {
+    listNode *p = h->first; // 현재 가리키는 노드는 first노드
+    listNode *prev = NULL;
+
+    // Case 1 : head에 있는 노드를 삭제하는 경우
+    // 비어있지 않으면서 first의 key가 key와 일치한다면
+    if (h->first != NULL && h->first->key == key)
+    {
+        deleteFirst(h);
+        return;
+    }
+
+    // Case 2 : Head 뒤에 있는 노드를 삭제하는 경우
+
+    while (p != NULL && p->key != key) // 마지막 노드까지 전부 비교했거나 그 전에 key값을 찾은 경우 탈출.
+    {
+        prev = p;
+        p = p->link;
+    }
+
+    // Case 2-1 : 중간에 낑긴 노드를 삭제하는 경우
+    prev->link = p->link;
+    free(p);
+
+    // Case 2-2 : 마지막 노드이면서 key값과 일치하는 경우
+    if (p->key == NULL)
+    {
+        deleteLast(h);
+        return;
+    }
+
+    // Case 2-3 : 끝까지 돌았는데도 key 값이 존재하지 않으면
+    if (p == NULL)
+        return;
+
+    return 0;
+}
+
+/**
+ * list의 마지막 노드 삭제
+ */
+int deleteLast(headNode *h)
+{
+    listNode *p = h->first;
+    listNode *prev = NULL;
+    while (p->link != NULL) // p가 마지막 노드를 가리키면 탈출.
+    {
+        prev = p;
+        p = p->link; // p값이 마지막 노드일 때까지 계속 건너감.
+    }
+    prev->link = NULL; // p인 마지막 노드까지 메모리 해제.
+    free(p);           // 마지막 노드를 가리키는 p 포인터를 해제시켜줌.
     return 0;
 }
 
 /**
  * 리스트의 링크를 역순으로 재 배치
  */
-int invertList(headNode *h)
+int invertList(headNode *h) // 3개의 포인터를 이용한 역순 Cycle 만들기.
 {
     // 이전값, 현재값, 다음값을 받아주는 3개의 포인터를 사용.
     // Why? 계속해서 연속된 값들을 받아줘야 1개의 역순 Cycle을 만들 수 있음.
@@ -274,11 +325,12 @@ int invertList(headNode *h)
 
         prev = p;
         p = next;
-        // prev, p를 한칸씩 땡기고 반복.
+        // prev, p를 한칸씩 땡겨줌.
     }
-    // p가 NULL이 되어 탈출하면서 리스트의 끝을 가리키는 prev까지
-    // 모두 역순 정렬이 되었으며 prev가 마지막 노드를 가리키게 됨.
-    h->first = prev; // 따라서 head를 prev로 옮겨줌.
+    // p가 NULL이 되면서 탈출함으로서 노드의 마지막인
+    // prev 값까지 모두 역순으로 정렬이 된 상태.
+    // 따라서 노드의 마지막인 prev값을 head가 가리키게 함.
+    h->first = prev;
     return 0;
 }
 
