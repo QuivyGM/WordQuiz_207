@@ -14,8 +14,7 @@ typedef enum
     C_EXIT,
 } command_t;
 
-char *
-custom_strndup(const char *s, size_t n)
+char *custom_strndup(const char *s, size_t n)
 {
     size_t len = strnlen(s, n);
     char *new = malloc(len + 1);
