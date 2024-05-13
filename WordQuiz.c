@@ -14,6 +14,7 @@ typedef enum
     C_EXIT,
 } command_t;
 
+// Fix Error in the code
 char *custom_strndup(const char *s, size_t n)
 {
     size_t len = strnlen(s, n);
