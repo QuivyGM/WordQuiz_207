@@ -80,7 +80,6 @@ char *read_a_line(FILE *fp)
 
 void print_menu()
 {
-
     printf("1. List all wordbooks\n");
     printf("2. Show the words in a wordbook\n");
     printf("3. Test with a wordbook\n");
@@ -98,7 +97,6 @@ int get_command()
 
 void list_wordbooks()
 {
-
     DIR *d = opendir("wordbooks");
 
     printf("\n  ----\n");
@@ -202,7 +200,6 @@ void run_test()
 
 int main()
 {
-
     printf(" *** Word Quiz *** \n\n");
 
     int cmd;
