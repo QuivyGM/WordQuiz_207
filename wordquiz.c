@@ -14,6 +14,16 @@ typedef
 	}
 	command_t ;
 
+char *strndup(const char *s, size_t n) {
+    size_t len = strnlen(s, n);
+    char *new_str = (char *)malloc(len + 1);
+    if (new_str == NULL)
+        return NULL;
+    new_str[len] = '\0';
+    memcpy(new_str, s, len);
+    return new_str;
+}
+
 char * read_a_line (FILE * fp)
 {
 	static char buf[BUFSIZ] ;
