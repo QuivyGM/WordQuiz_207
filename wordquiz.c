@@ -21,6 +21,7 @@ char *strndup(const char *s, size_t n) {
         return NULL;
     new_str[len] = '\0';
     memcpy(new_str, s, len);
+	
     return new_str;
 }
 
