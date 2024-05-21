@@ -4,65 +4,85 @@
 #include <dirent.h>
 #include <ctype.h>
 
+// Defines enumeration for command types
 typedef 
-	enum {
-		C_ZERO,
-		C_LIST,
-		C_SHOW,
-		C_TEST,
-		C_EXIT,
-	}
-	command_t ;
+    enum {
+        C_ZERO, // Zero command
+        C_LIST, // List command
+        C_SHOW, // Show command
+        C_TEST, // Test command
+        C_EXIT, // Exit command
+    }
+    command_t ;
 
-char * read_a_line (FILE * fp)
-{
-	static char buf[BUFSIZ] ;
-	static int buf_n = 0 ;
-	static int curr = 0 ;
+// Function to read line from file
+char * read_a_line (FILE * fp){
+    // Buffer to hold the line
+    static char buf[BUFSIZ] ;
+    // Size of the buffer
+    static int buf_n = 0 ;
+    // Current position in the buffer
+    static int curr = 0 ;
 
-	if (feof(fp) && curr == buf_n - 1)
-		return 0x0 ;
+    // If reach end of the file -> return null
+    if (feof(fp) && curr == buf_n - 1)
+        return 0x0 ;
 
-	char * s = 0x0 ;
-	size_t s_len = 0 ;
-	do {
-		int end = curr ;
-		while (!(end >= buf_n || !iscntrl(buf[end]))) {
-			end++ ;
-		}
-		if (curr < end && s != 0x0) {
-			curr = end ;
-			break ;
-		}
-		curr = end ;
-		while (!(end >= buf_n || iscntrl(buf[end]))) {
-			end++ ;
-		}
-		if (curr < end) {
-			if (s == 0x0) {
-				s = strndup(buf + curr, end - curr) ;
+    // Pointer to line string
+    char * s = 0x0 ;
+    // Length of line string
+    size_t s_len = 0 ;
+
+    // Loop: Read line from buffer
+    do {
+        // Set end of line to current position
+        int end = curr ;
+        // 
+        while (!(end >= buf_n || !iscntrl(buf[end]))) {
+            end++ ;
+        }
+
+        // If the current position is less than the end and line string is not null, break the loop
+        if (curr < end && s != 0x0) {
+            curr = end ;
+            break ;
+        }
+
+        // Set the current position to the end
+        curr = end ;
+
+        // increase end position until (end of the buffer) or (control character)
+        while (!(end >= buf_n || iscntrl(buf[end]))) {
+            end++ ;
+        }
+        // If the current position is less than the end
+        if (curr < end) {
+            // If the line string is null
+            if (s == 0x0) {
+                // Allocate memory for the line string and copy the line from the buffer
+                s = strndup(buf + curr, end - curr) ;
 				s_len = end - curr ;
 			}
-			else {
+			else {			// If line string is not null
 				s = realloc(s, s_len + end - curr + 1) ;
 				s = strncat(s, buf + curr, end - curr) ;
 				s_len = s_len + end - curr ;
 			}
 		}
-		if (end < buf_n) {
+		if (end < buf_n) {	// If end is less than buffer size
 			curr = end + 1 ;
 			break ;
 		}
 
-		buf_n = fread(buf, 1, sizeof(buf), fp) ;
-		curr = 0 ;
-	} while (buf_n > 0) ;
-	return s ;
+		buf_n = fread(buf, 1, sizeof(buf), fp) ;	// Read buffer from file
+		curr = 0 ;									// Set current position to 0
+	} while (buf_n > 0) ;// Loop until buffer size is greater than 0
+	return s ;	// Return line string
 }
 
 
 
-void print_menu() {
+void print_menu() {	// Print menu
 
 	printf("1. List all wordbooks\n") ;
 	printf("2. Show the words in a wordbook\n") ;
@@ -70,7 +90,7 @@ void print_menu() {
 	printf("4. Exit\n") ;
 }
 
-int get_command() {
+int get_command() {	// Get command
 	int cmd ;
 
 	printf(">") ;
@@ -78,138 +98,135 @@ int get_command() {
 	return cmd ;
 }
 
-void list_wordbooks ()
-{
+void list_wordbooks (){	// List wordbooks
 
-	DIR * d = opendir("wordbooks") ;
+	DIR * d = opendir("wordbooks") ;	// Open directory
 	
 	printf("\n  ----\n") ;
 
-	struct dirent * wb ;
-	while ((wb = readdir(d)) != NULL) {
-		if (strcmp(wb->d_name, ".") != 0 && strcmp(wb->d_name, "..") !=0) {
-			printf("  %s\n", wb->d_name) ;
+	struct dirent * wb ;				// Wordbook
+	while ((wb = readdir(d)) != NULL) {	// Read directory
+		if (strcmp(wb->d_name, ".") != 0 && strcmp(wb->d_name, "..") !=0) {	// If the name is not "." or ".."
+			printf("  %s\n", wb->d_name) ;	// Print name
 		}
 	}
-	closedir(d) ;
+	closedir(d) ;	// Close directory
 
 	printf("  ----\n") ;
 }
 
-void show_words ()
-{
-	char wordbook[128] ;
-	char filepath[256] ;
+void show_words (){	// Show words
+	char wordbook[128] ;	// Wordbook
+	char filepath[256] ;	// File path
 
-	list_wordbooks() ;
+	list_wordbooks() ;		// List wordbooks
 
 	printf("Type in the name of the wordbook?\n") ;
 	printf(">") ;
-	scanf("%s", wordbook) ;
+	scanf("%s", wordbook) ;	//단어장 입력
 
-	sprintf(filepath, "wordbooks/%s", wordbook) ;
+	sprintf(filepath, "wordbooks/%s", wordbook);	// Set file path
 
-	FILE * fp = fopen(filepath, "r") ;
+	FILE * fp = fopen(filepath, "r") ;				// Open file
 
 	printf("\n  -----\n") ;
-	char * line ;
-	while (line = read_a_line(fp)) {
-		char * word = strtok(line, "\"") ;
-		strtok(NULL, "\"") ;
-		char * meaning = strtok(NULL, "\"") ;
 
-		printf("  %s : %s\n", word, meaning) ;
+	char * line ;									// Array of characters
+	while (line = read_a_line(fp)) {				// Read line from file
+		char * word = strtok(line, "\"") ;				// word : string (strtok: divide string)
+		strtok(NULL, "\"") ;							// Divide string
+		char * meaning = strtok(NULL, "\"") ;			// meaning : string (strtok: divide string)
 
-		free(line) ;
+		printf("  %s : %s\n", word, meaning) ;			// Print word and meaning
+
+		free(line) ;									// Free string
 	}
 	printf("  -----\n\n") ;
 
-	fclose(fp) ;
+	fclose(fp) ;										// Close file
 }
 
 
-void run_test ()
-{
-	char wordbook[128] ;
-	char filepath[256] ;
+void run_test (){
+	char wordbook[128] ;	// wordbook
+	char filepath[256] ;	// file path
 
 	printf("Type in the name of the wordbook?\n") ;
 	printf(">") ;
 	scanf("%s", wordbook) ;
 
-	sprintf(filepath, "wordbooks/%s", wordbook) ;
+	sprintf(filepath, "wordbooks/%s", wordbook) ;	// Set file path
 
-	FILE * fp = fopen(filepath, "r") ;
+	FILE * fp = fopen(filepath, "r") ;				// Open file
 
 	printf("\n-----\n") ;
 
-	int n_questions = 0 ;
-	int n_correct = 0 ; 
+	int n_questions = 0 ;	// Number of questions
+	int n_correct = 0 ; 	// Number of correct answers
 
-	char * line ;
-	while (line = read_a_line(fp)) {
-		char * word = strtok(line, "\"") ;
-		strtok(NULL, "\"") ;
-		char * meaning = strtok(NULL, "\"") ;
+	char * line ;			// Array of characters (*한 이유는 문자열을 나누기 위해)
+	while (line = read_a_line(fp)) {		// Read line from file while line is not null
+		char * word = strtok(line, "\"") ;		// word : string (strtok: divide string)
+		strtok(NULL, "\"") ;					// Divide string
+		char * meaning = strtok(NULL, "\"") ;	// meaning : string (strtok: divide string)
 
-		printf("Q. %s\n", meaning) ;
-		printf("?  ") ;
+		printf("Q. %s\n", meaning) ;		// Print question
+		printf("?  ") ;						// Print question mark	
 
-		char answer[128] ;
-		scanf("%s", answer) ;
+		char answer[128] ;				// Answer	
+		scanf("%s", answer) ;			// Input answer
 
-		if (strcmp(answer, word) == 0) {
+		if (strcmp(answer, word) == 0) {	// If the answer is correct
 			printf("- correct\n") ;
-			n_correct++ ;
+			n_correct++ ;					// Increase the number of correct answers
 		}
-		else {
+		else {								// If the answer is wrong
 			printf("- wrong: %s\n", word) ;
 		}
 
-		n_questions++ ;
-		free(line) ;
+		n_questions++ ;						// Increase the number of questions
+		free(line) ;						// Free string
 	}
 
-	printf("(%d/%d)\n", n_correct, n_questions) ;
+	printf("(%d/%d)\n", n_correct, n_questions) ;	// Print the number of correct answers and questions
 
-	printf("-----\n\n") ;
+	printf("-----\n\n") ;	
 
-	fclose(fp) ;
+	fclose(fp) ;	// Close file							
 }
 
 
-int main ()
-{
+int main (){
 	
 	printf(" *** Word Quiz *** \n\n") ;
 
-	int cmd ;
+	int cmd ; // Command
 	do {
-		print_menu() ;
+		print_menu() ;					// Print menu
 
-		cmd = get_command() ;
-		switch (cmd) {
-			case C_LIST : {
+		cmd = get_command() ;			// Get command
+		switch (cmd) {	
+			case C_LIST : {				// List wordbooks
 				list_wordbooks() ;
 				break ;
 			}
 
-			case C_SHOW: {
+			case C_SHOW: {				// Show words
 				show_words() ;
 				break ;
 			}
 
-			case C_TEST: {
+			case C_TEST: {				// Workbook test
 				run_test() ;
 				break ;
 			}
 
-			case C_EXIT: {
+			case C_EXIT: {				// Exit
 				return EXIT_SUCCESS ;
 			}
 		}
 	}
-	while (cmd != C_EXIT) ;
+	while (cmd != C_EXIT) ;				// Loop until the command is not exit
 
 
 	return EXIT_SUCCESS ;
