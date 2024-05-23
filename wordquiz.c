@@ -16,7 +16,7 @@ typedef
 
 char *strndup(const char *s, size_t n) {
     size_t len = strnlen(s, n);
-    char *new_str = (char *)malloc(len + 1);
+    char *new_str = malloc(len + 1);
     if (new_str == NULL)
         return NULL;
     new_str[len] = '\0';
