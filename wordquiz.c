@@ -11,12 +11,12 @@ typedef
 		C_SHOW,
 		C_TEST,
 		C_EXIT,
-	}
+	} 
 	command_t ;
 
 char *strndup(const char *s, size_t n) {
     size_t len = strnlen(s, n);
-    char *new_str = malloc(len + 1);
+    char *new_str = (char *)malloc(len + 1);
     if (new_str == NULL)
         return NULL;
     new_str[len] = '\0';
@@ -55,7 +55,7 @@ char * read_a_line (FILE * fp)
 				s_len = end - curr ;
 			}
 			else {
-				s = realloc(s, s_len + end - curr + 1) ;
+				s = (char *)realloc(s, s_len + end - curr + 1) ;
 				s = strncat(s, buf + curr, end - curr) ;
 				s_len = s_len + end - curr ;
 			}
