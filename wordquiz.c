@@ -45,9 +45,7 @@ char * read_a_line (FILE * fp){	//파일에서 한 줄씩 읽어오는 함수
 		}
 		if (curr < end) {	//현재 위치가 끝보다 작을 때
 			if (s == 0x0) {	//문자열이 비어있을 때
-				s = malloc(end - curr + 1);									//replaced strndup
-				memcpy(s, buf + curr, end - curr);
-				s[end - curr] = '\0';
+				s = strndup(buf + curr, end - curr) ;
 				s_len = end - curr ;
 			}
 			else {			//문자열이 비어있지 않을 때
