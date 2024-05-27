@@ -10,8 +10,9 @@ WordQuiz_207 is a web application aimed at helping users improve their vocabular
 WordQuiz_207 is a web application designed for enhancing vocabulary skills via vocabulary word books or vocabulary tests.
 
 ### Badges
-[![Build Status](https://img.shields.io/travis/QuivyGM/WordQuiz_207/master.svg?style=flat-square)](https://travis-ci.org/QuivyGM/WordQuiz_207)
-[![License](https://img.shields.io/github/license/QuivyGM/WordQuiz_207.svg?style=flat-square)](https://github.com/QuivyGM/WordQuiz_207/blob/master/LICENSE)
+[![GitHub](https://img.shields.io/badge/GitHub-Profile-blue?style=flat-square&logo=github)](https://github.com/your_username)
+[![C++](https://img.shields.io/badge/Language-C%2B%2B-blue?style=flat-square&logo=c%2B%2B)](https://en.cppreference.com/)
+
 
 ## How to Install and Run the Project in Visual Studio Code (VSCode)
 
