@@ -6,10 +6,10 @@ WordQuiz_207
 ## Project Description
 WordQuiz_207 is a web application aimed at helping users improve their vocabulary through quizzes.
 
-## Short Summary
+### Short Summary
 WordQuiz_207 is a web application designed for enhancing vocabulary skills via vocabulary word books or vocabulary tests.
 
-## Badges
+### Badges
 [![Build Status](https://img.shields.io/travis/QuivyGM/WordQuiz_207/master.svg?style=flat-square)](https://travis-ci.org/QuivyGM/WordQuiz_207)
 [![License](https://img.shields.io/github/license/QuivyGM/WordQuiz_207.svg?style=flat-square)](https://github.com/QuivyGM/WordQuiz_207/blob/master/LICENSE)
 
