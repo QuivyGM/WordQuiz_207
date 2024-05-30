@@ -1,25 +1,41 @@
-# WordQuiz_207
 
-            [[[ To Do List ]]]
-	
-Analyze Code							코드 분석하기
+# WordQuiz
+**Introduce about my project**
 
-Add Comments						코드 주석 달기
+WordQuiz is my project which is a program that makes us guess the word.
+It makes the list of the words, and by guessing the word, it leads to  our knowledge improvement.
 
-Cleanup Code							코드 정리하기
+## Installation
 
-Debug / Stress Test						디버깅 / 반례 분석
+### Steps
+1. Clone the repository:
 
-Fix Errors, Crush Bugs					오류 수정하기
+    'git clone https://github.com/HyeongJun1125/WordQuiz.git'
+2. Navigate to the project directory:
 
-Brainstorm Additional Features / Improvements		추가기능 /발전점 토론
+    Since we don't have any directories,we can omit this step.
+3. Compile the program:
+    
+    gcc -o wordquiz wordquiz.c
+    
+4. Run what you compiled
 
-Clean / Improve UI						UI 청소 / 발전
+    ./wordquiz
 
-Add Additional Vocabulary for Users				디폴트 용어 더하기
 
-Write Commit-Message 			커밋 메시지 작성을 통한 깃허브 업로드
 
-Receive feedback and repeat				피드백 받고 한번더 코드 고치기
+## Contributing Guidelines
 
-Design some test cases					테스트 케이스 구상
+It has some problems that have to be solved.
+As I already fixed, it had a problem when we wrote the wrong input,
+it creates an unterminate loops and did the unnormal exit when it exceeds
+the system memory.
+And also, we should need more words in .txt file and the gcc compiler to execute them.
+
+So, we need you guys to fix the error like <unable to use the funcion>
+, <invalid type to execute the program>, and <wrong inputs that lead to unusual program>
+
+It is a project in my major class in CHUNGBUK National University.
+And it has already a contributors who are my team named GyuHyeon and MinChan.
+I appreciate their efforts.
+
